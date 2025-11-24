@@ -183,16 +183,41 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
@@ -204,6 +229,8 @@
         .btn-secondary:hover {
             background: var(--primary);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
         }
 
         .btn-danger {
@@ -213,6 +240,8 @@
 
         .btn-danger:hover {
             background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(244, 67, 54, 0.3);
         }
 
         .btn-sm {
@@ -223,7 +252,7 @@
         /* Grid Layout */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -234,36 +263,70 @@
             padding: 25px;
             box-shadow: var(--shadow);
             transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--shadow-lg);
         }
 
+        .card:active {
+            transform: translateY(-4px);
+        }
+
         .card-icon {
-            font-size: 2.5em;
+            font-size: 2.2em;
             margin-bottom: 15px;
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 12px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
+            transition: all 0.3s;
+            transform-origin: center;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.15) rotate(10deg);
         }
 
         .card-value {
-            font-size: 2.2em;
+            font-size: 2.5em;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--dark);
+            transition: color 0.3s;
+        }
+
+        .card:hover .card-value {
+            color: var(--primary);
         }
 
         .card-label {
             color: #999;
             font-size: 0.9em;
+            font-weight: 600;
         }
 
         /* Add Item Form */
@@ -284,7 +347,7 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -311,13 +374,20 @@
             font-size: 1em;
             transition: all 0.3s;
             font-family: inherit;
+            width: 100%;
+        }
+
+        .form-input:hover,
+        .form-select:hover {
+            border-color: #bbb;
         }
 
         .form-input:focus,
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
         }
 
         .form-actions {
@@ -361,16 +431,42 @@
             background: white;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             font-weight: 600;
             color: #666;
+            position: relative;
+            overflow: hidden;
         }
 
-        .filter-btn:hover,
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .filter-btn:active::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
         .filter-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .items-list {
@@ -387,17 +483,47 @@
             background: var(--light);
             border-radius: 10px;
             border-left: 4px solid var(--primary);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+            pointer-events: none;
+        }
+
+        .item:hover::before {
+            left: 100%;
         }
 
         .item:hover {
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
             background: white;
+            transform: translateX(5px);
+            border-left-color: var(--primary-dark);
+        }
+
+        .item:active {
+            transform: translateX(2px);
         }
 
         .item.completed {
-            opacity: 0.6;
+            opacity: 0.65;
             border-left-color: var(--success);
+            background: rgba(76, 175, 80, 0.05);
+        }
+
+        .item.completed:hover {
+            opacity: 0.85;
         }
 
         .item-checkbox {
@@ -405,6 +531,15 @@
             height: 24px;
             cursor: pointer;
             accent-color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .item-checkbox:hover {
+            transform: scale(1.2);
+        }
+
+        .item-checkbox:checked {
+            accent-color: var(--success);
         }
 
         .item-info {
@@ -448,10 +583,30 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 1em;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-icon:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-edit {
@@ -461,7 +616,8 @@
 
         .btn-edit:hover {
             background: #f57c00;
-            transform: scale(1.1);
+            transform: scale(1.12);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
         }
 
         .btn-delete {
@@ -471,7 +627,8 @@
 
         .btn-delete:hover {
             background: #d32f2f;
-            transform: scale(1.1);
+            transform: scale(1.12);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
         }
 
         .empty-state {
@@ -590,7 +747,7 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .dashboard {
                 grid-template-columns: 1fr;
             }
@@ -607,10 +764,44 @@
                 padding: 20px;
             }
 
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar-header {
+                padding: 20px;
+            }
+
+            .sidebar-title {
+                font-size: 1.2em;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
             .header {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
+            }
+
+            .header-left h1 {
+                font-size: 1.5em;
             }
 
             .header-actions {
@@ -619,11 +810,90 @@
             }
 
             .grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .item {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .item-meta {
+                flex-basis: 100%;
+                flex-wrap: wrap;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn-sm {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .add-item-section,
+            .items-section,
+            .summary-section {
+                padding: 15px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-value {
+                font-size: 2em;
+            }
+
+            .item-actions {
+                gap: 5px;
+            }
+
+            .btn-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9em;
+            }
+
+            .filter-buttons {
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 
@@ -895,7 +1165,39 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderItems();
             updateStats();
+            setupEventListeners();
         });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Enter key in form inputs
+            const inputs = document.querySelectorAll('.form-input, .form-select');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && input.id === 'item-name') {
+                        addItem();
+                    }
+                });
+            });
+
+            // Card click interactions
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.animation = 'none';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 10);
+                });
+            });
+
+            // Sidebar nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
 
         // Add Item
         function addItem() {
@@ -905,7 +1207,12 @@
             const price = parseFloat(document.getElementById('item-price').value) || 0;
 
             if (!name) {
-                alert('Please enter an item name');
+                showNotification('Please enter an item name', 'error');
+                document.getElementById('item-name').focus();
+                document.getElementById('item-name').style.borderColor = '#f44336';
+                setTimeout(() => {
+                    document.getElementById('item-name').style.borderColor = '';
+                }, 2000);
                 return;
             }
 
@@ -919,12 +1226,12 @@
                 createdAt: new Date().toISOString()
             };
 
-            items.push(item);
+            items.unshift(item);
             saveItems();
             resetForm();
             renderItems();
             updateStats();
-            showNotification('Item added successfully!');
+            showNotification(`✓ "${name}" added successfully!`);
         }
 
         function addItemFromModal() {
@@ -938,12 +1245,13 @@
 
         // Remove Item
         function removeItem(id) {
-            if (confirm('Are you sure you want to remove this item?')) {
+            const item = items.find(i => i.id === id);
+            if (confirm(`Remove "${item.name}" from the list?`)) {
                 items = items.filter(item => item.id !== id);
                 saveItems();
                 renderItems();
                 updateStats();
-                showNotification('Item removed!');
+                showNotification(`✓ Item removed!`);
             }
         }
 
@@ -955,6 +1263,8 @@
                 saveItems();
                 renderItems();
                 updateStats();
+                const status = item.completed ? '✓ Completed' : '○ Pending';
+                showNotification(`${status}: ${item.name}`);
             }
         }
 
@@ -975,11 +1285,11 @@
             }
 
             list.innerHTML = filtered.map(item => `
-                <div class="item ${item.completed ? 'completed' : ''}">
+                <div class="item ${item.completed ? 'completed' : ''}" data-id="${item.id}">
                     <input type="checkbox" class="item-checkbox" ${item.completed ? 'checked' : ''} 
                         onchange="toggleItem(${item.id})">
                     <div class="item-info">
-                        <div class="item-name">${item.name}</div>
+                        <div class="item-name">${escapeHtml(item.name)}</div>
                         <div class="item-meta">
                             <div class="item-meta-item">
                                 <i class="fas fa-tag"></i>
@@ -995,18 +1305,24 @@
                             </div>
                             <div class="item-meta-item">
                                 <span class="badge ${item.completed ? 'badge-success' : 'badge-warning'}">
-                                    ${item.completed ? 'Completed' : 'Pending'}
+                                    ${item.completed ? '✓ Completed' : '○ Pending'}
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="item-actions">
-                        <button class="btn-icon btn-delete" onclick="removeItem(${item.id})">
+                        <button class="btn-icon btn-delete" onclick="removeItem(${item.id})" title="Delete item">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </div>
             `).join('');
+
+            // Add animations
+            list.querySelectorAll('.item').forEach((item, index) => {
+                item.style.animation = `fadeIn 0.3s ease forwards`;
+                item.style.animationDelay = `${index * 0.05}s`;
+            });
         }
 
         // Update Stats
@@ -1016,11 +1332,11 @@
             const totalPrice = items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
             const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-            // Update cards
-            document.getElementById('total-items').textContent = total;
-            document.getElementById('completed-items').textContent = completed;
-            document.getElementById('total-price').textContent = `$${totalPrice.toFixed(2)}`;
-            document.getElementById('progress-percent').textContent = `${progress}%`;
+            // Update cards with animation
+            updateStatCard('total-items', total);
+            updateStatCard('completed-items', completed);
+            updateStatCard('total-price', `$${totalPrice.toFixed(2)}`);
+            updateStatCard('progress-percent', `${progress}%`);
 
             // Update sidebar
             document.getElementById('sidebar-total').textContent = total;
@@ -1033,6 +1349,21 @@
             document.getElementById('total-spent').textContent = `$${totalPrice.toFixed(2)}`;
             const avgPrice = total === 0 ? 0 : (totalPrice / total).toFixed(2);
             document.getElementById('avg-price').textContent = `$${avgPrice}`;
+        }
+
+        // Update stat card with animation
+        function updateStatCard(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                const oldValue = element.textContent;
+                if (oldValue !== value) {
+                    element.style.color = 'var(--primary)';
+                    element.textContent = value;
+                    setTimeout(() => {
+                        element.style.color = 'var(--dark)';
+                    }, 500);
+                }
+            }
         }
 
         // Filter Items
@@ -1049,11 +1380,13 @@
             document.getElementById('item-quantity').value = '1';
             document.getElementById('item-category').value = 'Grocery';
             document.getElementById('item-price').value = '0';
+            document.getElementById('item-name').focus();
         }
 
         // Modal
         function openAddModal() {
             document.getElementById('add-modal').classList.add('active');
+            document.getElementById('modal-item-name').focus();
         }
 
         function closeModal() {
@@ -1065,16 +1398,19 @@
             localStorage.setItem('shoppingItems', JSON.stringify(items));
         }
 
-        // Navigation
-        function switchTab(tab) {
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.nav-item').classList.add('active');
+        // Notifications
+        let notificationTimeout;
+        function showNotification(message, type = 'success') {
+            console.log(message);
+            clearTimeout(notificationTimeout);
+            // Add toast notification here if needed
         }
 
-        // Notifications
-        function showNotification(message) {
-            console.log(message);
-            // Add toast notification here if needed
+        // Helper function
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // Keyboard shortcuts
@@ -1082,6 +1418,16 @@
             if (e.ctrlKey && e.key === 'n') {
                 e.preventDefault();
                 document.getElementById('item-name').focus();
+            }
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Click outside modal to close
+        document.getElementById('add-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'add-modal') {
+                closeModal();
             }
         });
     </script>
