@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        li {
+            background: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        li:hover {
+            background: #e8e8e8;
+            transform: translateX(5px);
+        }
+        
+        li.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+        
+        .item-text {
+            flex: 1;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Shopping List</h1>
+        
+        <div class="input-group">
+            <input type="text" id="itemInput" placeholder="Add item to your list..." />
+            <button onclick="addItem()">Add</button>
+        </div>
+        
+        <ul id="shoppingList">
+            <div class="empty-state">Your list is empty. Add items to get started!</div>
+        </ul>
+    </div>
+    
+    <script>
+        const itemInput = document.getElementById('itemInput');
+        const shoppingList = document.getElementById('shoppingList');
+        
+        // Load items from localStorage
+        function loadItems() {
+            const items = JSON.parse(localStorage.getItem('shoppingItems')) || [];
+            shoppingList.innerHTML = '';
+            
+            if (items.length === 0) {
+                shoppingList.innerHTML = '<div class="empty-state">Your list is empty. Add items to get started!</div>';
+                return;
+            }
+            
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                if (item.completed) li.classList.add('completed');
+                
+                li.innerHTML = `
+                    <input type="checkbox" class="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleItem(${index})">
+                    <span class="item-text">${item.text}</span>
+                    <button class="delete-btn" onclick="deleteItem(${index})">Delete</button>
+                `;
+                shoppingList.appendChild(li);
+            });
+        }
+        
+        // Add item
+        function addItem() {
+            const text = itemInput.value.trim();
+            if (!text) return;
+            
+            const items = JSON.parse(localStorage.getItem('shoppingItems')) || [];
+            items.push({ text, completed: false });
+            localStorage.setItem('shoppingItems', JSON.stringify(items));
+            
+            itemInput.value = '';
+            loadItems();
+        }
+        
+        // Toggle item completion
+        function toggleItem(index) {
+            const items = JSON.parse(localStorage.getItem('shoppingItems')) || [];
+            items[index].completed = !items[index].completed;
+            localStorage.setItem('shoppingItems', JSON.stringify(items));
+            loadItems();
+        }
+        
+        // Delete item
+        function deleteItem(index) {
+            const items = JSON.parse(localStorage.getItem('shoppingItems')) || [];
+            items.splice(index, 1);
+            localStorage.setItem('shoppingItems', JSON.stringify(items));
+            loadItems();
+        }
+        
+        // Enter key to add item
+        itemInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addItem();
+        });
+        
+        // Initial load
+        loadItems();
+    </script>
+</body>
+</html>
