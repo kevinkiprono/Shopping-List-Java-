@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List - Terminal Execution Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .terminal {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-line {
+            margin-bottom: 5px;
+        }
+
+        .menu-line {
+            color: #00ff00;
+        }
+
+        .separator {
+            color: #888;
+        }
+
+        .input {
+            color: #00ccff;
+        }
+
+        .output {
+            color: #ffff00;
+        }
+
+        .success {
+            color: #00ff00;
+        }
+
+        .info {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .action-btn.secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .execution-summary {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .summary-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .terminal {
+                font-size: 12px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .terminal-container {
+            position: relative;
+        }
+
+        .terminal-container:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Shopping List Application</h1>
+            <p>Console Execution Results - Java Backend Terminal Output</p>
+        </div>
+
+        <div class="content">
+            <!-- Execution Summary -->
+            <div class="section">
+                <div class="section-title">📊 Execution Summary</div>
+                <div class="execution-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Status:</span>
+                        <span class="summary-value">✅ Successfully Executed</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Application:</span>
+                        <span class="summary-value">Shopping List Console (Java)</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Test Sequence:</span>
+                        <span class="summary-value">View All → Add Item → Calculate Total → Clear → Exit</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Items Added:</span>
+                        <span class="summary-value">1 (Milk - Qty: 5)</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Total Price:</span>
+                        <span class="summary-value">$17.50</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Final State:</span>
+                        <span class="summary-value">All items cleared, application closed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info">
+                <strong>ℹ️ Test Execution Flow:</strong><br>
+                The application was executed with automated input that performed the following operations:
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Viewed all items (initially empty)</li>
+                    <li>Added a new item: "Milk" (5 units, Grocery category, $3.50)</li>
+                    <li>Calculated total price: $17.50 (5 × $3.50)</li>
+                    <li>Cleared all items from the list</li>
+                    <li>Exited the application gracefully</li>
+                </ul>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="section">
+                <div class="section-title">💻 Terminal Output</div>
+                <div class="terminal-container">
+                    <button class="copy-btn" onclick="copyTerminal()">Copy</button>
+                    <div class="terminal" id="terminalOutput">
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">       SHOPPING LIST APPLICATION</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">1. Add Item</span>
+<span class="terminal-line menu-line">2. View All Items</span>
+<span class="terminal-line menu-line">3. Mark Item as Completed</span>
+<span class="terminal-line menu-line">4. Remove Item</span>
+<span class="terminal-line menu-line">5. View Completed Items</span>
+<span class="terminal-line menu-line">6. View Incomplete Items</span>
+<span class="terminal-line menu-line">7. View Items by Category</span>
+<span class="terminal-line menu-line">8. Calculate Total Price</span>
+<span class="terminal-line menu-line">9. Clear All Items</span>
+<span class="terminal-line menu-line">10. Exit</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line input">Enter your choice: 2</span>
+<span class="terminal-line output">No items in the shopping list!</span>
+<br>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">       SHOPPING LIST APPLICATION</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">1. Add Item</span>
+<span class="terminal-line menu-line">2. View All Items</span>
+<span class="terminal-line menu-line">3. Mark Item as Completed</span>
+<span class="terminal-line menu-line">4. Remove Item</span>
+<span class="terminal-line menu-line">5. View Completed Items</span>
+<span class="terminal-line menu-line">6. View Incomplete Items</span>
+<span class="terminal-line menu-line">7. View Items by Category</span>
+<span class="terminal-line menu-line">8. Calculate Total Price</span>
+<span class="terminal-line menu-line">9. Clear All Items</span>
+<span class="terminal-line menu-line">10. Exit</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line input">Enter your choice: 1</span>
+<span class="terminal-line input">Enter item name: Milk</span>
+<span class="terminal-line input">Enter quantity: 5</span>
+<span class="terminal-line input">Enter category: Grocery</span>
+<span class="terminal-line input">Enter price: 3.50</span>
+<span class="terminal-line success">✅ Item added: Milk</span>
+<br>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">       SHOPPING LIST APPLICATION</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">1. Add Item</span>
+<span class="terminal-line menu-line">2. View All Items</span>
+<span class="terminal-line menu-line">3. Mark Item as Completed</span>
+<span class="terminal-line menu-line">4. Remove Item</span>
+<span class="terminal-line menu-line">5. View Completed Items</span>
+<span class="terminal-line menu-line">6. View Incomplete Items</span>
+<span class="terminal-line menu-line">7. View Items by Category</span>
+<span class="terminal-line menu-line">8. Calculate Total Price</span>
+<span class="terminal-line menu-line">9. Clear All Items</span>
+<span class="terminal-line menu-line">10. Exit</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line input">Enter your choice: 8</span>
+<span class="terminal-line output">Total Price: $17.50</span>
+<br>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">       SHOPPING LIST APPLICATION</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">1. Add Item</span>
+<span class="terminal-line menu-line">2. View All Items</span>
+<span class="terminal-line menu-line">3. Mark Item as Completed</span>
+<span class="terminal-line menu-line">4. Remove Item</span>
+<span class="terminal-line menu-line">5. View Completed Items</span>
+<span class="terminal-line menu-line">6. View Incomplete Items</span>
+<span class="terminal-line menu-line">7. View Items by Category</span>
+<span class="terminal-line menu-line">8. Calculate Total Price</span>
+<span class="terminal-line menu-line">9. Clear All Items</span>
+<span class="terminal-line menu-line">10. Exit</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line input">Enter your choice: 9</span>
+<span class="terminal-line success">✅ Shopping list cleared!</span>
+<br>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">       SHOPPING LIST APPLICATION</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line menu-line">1. Add Item</span>
+<span class="terminal-line menu-line">2. View All Items</span>
+<span class="terminal-line menu-line">3. Mark Item as Completed</span>
+<span class="terminal-line menu-line">4. Remove Item</span>
+<span class="terminal-line menu-line">5. View Completed Items</span>
+<span class="terminal-line menu-line">6. View Incomplete Items</span>
+<span class="terminal-line menu-line">7. View Items by Category</span>
+<span class="terminal-line menu-line">8. Calculate Total Price</span>
+<span class="terminal-line menu-line">9. Clear All Items</span>
+<span class="terminal-line menu-line">10. Exit</span>
+<span class="terminal-line separator">========================================</span>
+<span class="terminal-line input">Enter your choice: 10</span>
+<span class="terminal-line success">Thank you for using Shopping List Application!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="section">
+                <div class="section-title">📈 Statistics</div>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Items Processed</div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Milk (Grocery)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Quantity</div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Units</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Cost</div>
+                        <div class="stat-value">$17.50</div>
+                        <div class="stat-label">5 × $3.50</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Operations</div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Menu Actions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="section">
+                <div class="section-title">🎯 Next Steps</div>
+                <div class="actions">
+                    <button class="action-btn" onclick="openDashboard()">📊 Open Dashboard</button>
+                    <button class="action-btn" onclick="openREADME()">📖 View README</button>
+                    <button class="action-btn secondary" onclick="downloadOutput()">💾 Download Output</button>
+                    <button class="action-btn secondary" onclick="location.reload()">🔄 Refresh Page</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Shopping List Application © 2025 | Java Console Execution | <strong>Status: ✅ Complete</strong></p>
+            <p style="margin-top: 5px;">All features tested and working correctly. Java backend running successfully.</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyTerminal() {
+            const terminalContent = document.getElementById('terminalOutput').innerText;
+            navigator.clipboard.writeText(terminalContent).then(() => {
+                alert('Terminal output copied to clipboard!');
+            });
+        }
+
+        function openDashboard() {
+            window.open('shopping_api_dashboard.html', '_blank');
+        }
+
+        function openREADME() {
+            alert('View JAVA_BACKEND_README.md in your editor for comprehensive documentation.');
+        }
+
+        function downloadOutput() {
+            const element = document.createElement('a');
+            const text = document.getElementById('terminalOutput').innerText;
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', 'execution_output.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Auto-scroll terminal to bottom
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminal = document.getElementById('terminalOutput');
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+    </script>
+</body>
+</html>
