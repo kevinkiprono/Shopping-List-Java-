@@ -28,8 +28,7 @@ public class ShoppingListEventHandler {
                 name.trim(),
                 Math.max(1, quantity),
                 category,
-                Math.max(0, price)
-        );
+                Math.max(0, price));
 
         service.addItem(item);
         System.out.println("✓ Event: Item added - " + name);
@@ -142,8 +141,11 @@ public class ShoppingListEventHandler {
         System.out.println("Completed:        " + completedItems.size());
         System.out.println("Incomplete:       " + (allItems.size() - completedItems.size()));
         System.out.println("Total Price:      $" + String.format("%.2f", totalPrice));
-        System.out.println("Average Price:    $" + (allItems.isEmpty() ? "0.00" : String.format("%.2f", totalPrice / allItems.size())));
-        System.out.println("Progress:         " + (allItems.isEmpty() ? "0" : Math.round((double) completedItems.size() / allItems.size() * 100)) + "%");
+        System.out.println("Average Price:    $"
+                + (allItems.isEmpty() ? "0.00" : String.format("%.2f", totalPrice / allItems.size())));
+        System.out.println("Progress:         "
+                + (allItems.isEmpty() ? "0" : Math.round((double) completedItems.size() / allItems.size() * 100))
+                + "%");
         System.out.println("========================================\n");
     }
 

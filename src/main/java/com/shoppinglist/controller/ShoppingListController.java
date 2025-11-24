@@ -80,7 +80,8 @@ public class ShoppingListController {
      * PUT /api/items/{id} - Update item
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> updateItem(@PathVariable String id, @RequestBody ShoppingItem updatedItem) {
+    public ResponseEntity<Map<String, Object>> updateItem(@PathVariable String id,
+            @RequestBody ShoppingItem updatedItem) {
         try {
             ShoppingItem existingItem = service.getItemById(id);
             if (existingItem == null) {
@@ -204,7 +205,8 @@ public class ShoppingListController {
             stats.put("incompleteItems", items.size() - completed.size());
             stats.put("totalPrice", String.format("%.2f", totalPrice));
             stats.put("averagePrice", items.isEmpty() ? 0 : String.format("%.2f", totalPrice / items.size()));
-            stats.put("progressPercentage", items.isEmpty() ? 0 : Math.round((double) completed.size() / items.size() * 100));
+            stats.put("progressPercentage",
+                    items.isEmpty() ? 0 : Math.round((double) completed.size() / items.size() * 100));
 
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
